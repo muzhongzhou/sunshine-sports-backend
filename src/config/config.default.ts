@@ -1,7 +1,8 @@
 import { MidwayConfig } from '@midwayjs/core';
+import { User } from '../entity/user.entity';
 
 export default {
-  // use for cookie sign key, should change to your own and keep security
+  // use for a cookie sign key, should change to your own and keep security
   keys: '1752828959331_4230',
   koa: {
     port: 7001,
@@ -17,7 +18,7 @@ export default {
         database: 'sunshine_db',
         synchronize: true, // 开发时为 true，生产时改为 false
         logging: true,
-        entities: ['src/entity/*.ts'],
+        entities: [User],
       },
     },
   },
