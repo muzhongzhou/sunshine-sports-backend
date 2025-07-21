@@ -4,6 +4,7 @@ import { User } from './entity/user.entity';
 import { Venue } from "./entity/venue.entity";
 import { Comment } from "./entity/comment.entity";
 import { Reservation } from './entity/reservation.entity';
+import { Order } from './entity/order.entity';
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -14,6 +15,6 @@ export const AppDataSource = new DataSource({
   database: 'sunshine_db',
   synchronize: true,
   logging: true,
-  entities: [User, Venue, Comment, Reservation],
+  entities: [User, Venue, Comment, Reservation, Order],
   migrations: ['src/migration/**/*.ts'],
 });
