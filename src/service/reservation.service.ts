@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Reservation } from '../entity/reservation.entity';
 import { User } from '../entity/user.entity';
 import { Venue } from '../entity/venue.entity';
+import { Sport } from "../entity/sport.entity";
 
 @Provide()
 export class ReservationService {
@@ -16,13 +17,17 @@ export class ReservationService {
   @InjectEntityModel(Venue)
   venueModel: Repository<Venue>;
 
-  // 添加报名
-  async addReservation(uid: number, venueId: number, sport: string, timeSlot: string) {
-    const user = await this.userModel.findOneBy({ uid });
-    const venue = await this.venueModel.findOneBy({ id: venueId });
+  @InjectEntityModel(Sport)
+  sportModel: Repository<Sport>;
 
-    if (!user || !venue) {
-      return { success: false, message: '用户或场馆不存在' };
+  // 添加报名
+  async addReservation(uid: number, venueId: number, sportId: number, timeSlot: string) {
+    const user = await this.userModel.findOneBy({ uid });
+    const venue = await this.venueModel.findOneBy({ vid: venueId });
+    const sport = await this.sportModel.findOneBy({ sid: sportId });
+
+    if (!user || !venue || !sport) {
+      return { success: false, message: '用户、场馆或运动不存在' };
     }
 
     const reservation = new Reservation();
@@ -40,7 +45,7 @@ export class ReservationService {
   async getReservationsByUser(uid: number) {
     const reservations = await this.reservationModel.find({
       where: { user: { uid } },
-      relations: ['venue', 'user'],
+      relations: ['venue', 'sport'],
     });
     return { success: true, data: reservations };
   }

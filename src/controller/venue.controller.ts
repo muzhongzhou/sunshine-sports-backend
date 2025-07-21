@@ -19,20 +19,20 @@ export class VenueController {
   }
 
   // 获取单个场馆
-  @Get('/:id')
-  async getVenueById(@Param('id') id: number) {
-    return await this.venueService.getVenueById(id);
+  @Get('/:vid')
+  async getVenueById(@Param('vid') vid: number) {
+    return await this.venueService.getVenueById(vid);
   }
 
   // 更新场馆
-  @Put('/update/:id')
-  async updateVenue(@Param('id') id: number, @Body() body) {
-    return await this.venueService.updateVenue(id, body);
+  @Put('/update/:vid')
+  async updateVenue(@Param('vid') vid: number, @Body() body) {
+    return await this.venueService.updateVenue(vid, body);
   }
 
   // 删除场馆
-  @Del('/delete/:id')
-  async deleteVenue(@Param('id') id: number) {
-    return await this.venueService.deleteVenue(id);
+  @Del('/delete/:vid')
+  async deleteVenue(@Param('vid') vid: number) {
+    return await this.venueService.deleteVenue(vid);
   }
 }

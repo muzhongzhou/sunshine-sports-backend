@@ -22,8 +22,8 @@ export class VenueService {
   }
 
   // 根据 ID 获取场馆
-  async getVenueById(id: number) {
-    const venue = await this.venueModel.findOneBy({ id });
+  async getVenueById(vid: number) {
+    const venue = await this.venueModel.findOneBy({ vid: vid });
     if (venue) {
       return { success: true, data: venue };
     } else {
@@ -32,14 +32,14 @@ export class VenueService {
   }
 
   // 更新场馆
-  async updateVenue(id: number, data: Partial<Venue>) {
-    await this.venueModel.update(id, data);
+  async updateVenue(vid: number, data: Partial<Venue>) {
+    await this.venueModel.update(vid, data);
     return { success: true, message: '更新成功' };
   }
 
   // 删除场馆
-  async deleteVenue(id: number) {
-    await this.venueModel.delete(id);
+  async deleteVenue(vid: number) {
+    await this.venueModel.delete(vid);
     return { success: true, message: '删除成功' };
   }
 }

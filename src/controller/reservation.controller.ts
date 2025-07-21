@@ -7,13 +7,13 @@ export class ReservationController {
   reservationService: ReservationService;
 
   // 添加报名
-  @Post('/add')
-  async addReservation(@Body() body) {
-    const { uid, venueId, sport, timeSlot } = body;
-    if (!uid || !venueId || !sport || !timeSlot) {
-      return { success: false, message: '请填写所有报名信息' };
+  @Post('/reserve')
+  async reserve(@Body() body) {
+    const { uid, venueId, sportId, timeSlot } = body;
+    if (!uid || !venueId || !sportId || !timeSlot) {
+      return { success: false, message: '请填写所有信息' };
     }
-    return await this.reservationService.addReservation(uid, venueId, sport, timeSlot);
+    return await this.reservationService.addReservation(uid, venueId, sportId, timeSlot);
   }
 
   // 获取用户所有报名

@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from './user.entity';
 import { Venue } from './venue.entity';
+import { Sport } from "./sport.entity";
 
 @Entity()
 export class Reservation {
@@ -15,8 +16,9 @@ export class Reservation {
   @JoinColumn({ name: 'venueId' })
   venue: Venue;
 
-  @Column()
-  sport: string;
+  @ManyToOne(() => Sport)
+  @JoinColumn({ name: 'sportId' })
+  sport: Sport;
 
   @Column()
   timeSlot: string;

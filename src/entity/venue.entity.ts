@@ -1,18 +1,19 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Sport } from './sport.entity';
 
 @Entity()
 export class Venue {
   @PrimaryGeneratedColumn()
-  id: number;
+  vid: number;
 
   @Column()
   name: string;
 
-  @Column('text')
+  @Column()
   description: string;
 
-  @Column('simple-json')
-  sports: string[]; // 例如: ["游泳", "乒乓球", "羽毛球"]
+  @OneToMany(() => Sport, sport => sport.venue)
+  sports: Sport[];
 
   @Column()
   address: string;
