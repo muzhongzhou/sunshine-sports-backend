@@ -7,7 +7,7 @@ export class ReservationController {
   reservationService: ReservationService;
 
   // 添加报名
-  @Post('/reserve')
+  @Post('/create')
   async reserve(@Body() body) {
     const { uid, venueId, sportId, timeSlot } = body;
     if (!uid || !venueId || !sportId || !timeSlot) {

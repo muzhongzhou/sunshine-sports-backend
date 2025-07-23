@@ -24,10 +24,10 @@ export class SportController {
   }
 
   @Del('/delete')
-  async deleteSport(@Query('id') id: number) {
-    if (!id) {
+  async deleteSport(@Query('sid') sid: number) {
+    if (!sid) {
       return { success: false, message: '请输入要删除的运动ID' };
     }
-    return await this.sportService.deleteSport(id);
+    return await this.sportService.deleteSport(sid);
   }
 }

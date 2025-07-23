@@ -7,7 +7,7 @@ export class CommentController {
   commentService: CommentService;
 
   // 添加评论接口
-  @Post('/add')
+  @Post('/create')
   async addComment(@Body() body) {
     const { venueId, userId, content } = body;
     if (!venueId || !userId || !content) {

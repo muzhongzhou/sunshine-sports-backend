@@ -21,8 +21,8 @@ export class SportService {
     return { success: true, data: sports };
   }
 
-  async deleteSport(id: number) {
-    await this.sportModel.delete(id);
+  async deleteSport(sid: number) {
+    await this.sportModel.delete(sid);
     return { success: true, message: '删除成功' };
   }
 }
