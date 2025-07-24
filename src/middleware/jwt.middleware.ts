@@ -7,6 +7,8 @@ export class JwtMiddleware implements IMiddleware<Context, NextFunction> {
   @Inject()
   jwtService: JwtService;
 
+
+
   public static ignorePaths = [
     '/user/register',
     '/user/login'
@@ -14,6 +16,12 @@ export class JwtMiddleware implements IMiddleware<Context, NextFunction> {
 
   resolve() {
     return async (ctx: Context, next: NextFunction) => {
+      // 如果是 OPTIONS 请求，直接放行
+      if (ctx.method === 'OPTIONS') {
+        await next();
+        return;
+      }
+
       // 检查是否在白名单中
       if (JwtMiddleware.ignorePaths.includes(ctx.path)) {
         await next();

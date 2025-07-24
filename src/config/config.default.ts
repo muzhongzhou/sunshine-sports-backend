@@ -12,6 +12,11 @@ export default {
   koa: {
     port: 7001,
   },
+  cors: {
+    origin: '*',
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
+    credentials: true,
+  },
   typeorm: {
     dataSource: {
       default: {
