@@ -27,4 +27,8 @@ export default {
       },
     },
   },
+  jwt: {
+    secret: process.env.JWT_SECRET || '3a5b640bd867481f39d81c497e4529116698e0bdce5dbc2c6048753e182a4af814033cffe9b95ccd69bf63cd02f819df393f5bc8736995456ac41d904d85978f',
+    expiresIn: '2d', // token 有效期
+  },
 } as MidwayConfig;

@@ -1,13 +1,17 @@
-import { Provide } from '@midwayjs/core';
+import { Provide, Inject } from '@midwayjs/core';
 import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../entity/user.entity';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@midwayjs/jwt';
 
 @Provide()
 export class UserService {
   @InjectEntityModel(User)
   userModel: Repository<User>;
+
+  @Inject()
+  jwtService: JwtService;
 
   // 注册
   async register(name: string, phone: string, password: string, role: '学生' | '老师') {
@@ -26,7 +30,7 @@ export class UserService {
 
     await this.userModel.save(user);
 
-    delete user.password; // 返回前删除
+    delete user.password;
 
     return { success: true, message: '注册成功', data: user };
   }
@@ -43,9 +47,20 @@ export class UserService {
       return { success: false, message: '手机号或密码错误' };
     }
 
-    delete user.password; // 返回前删除
+    // 生成 token
+    const token = await this.jwtService.sign({
+      uid: user.uid,
+      phone: user.phone,
+      role: user.role,
+    });
 
-    return { success: true, message: '登录成功', data: user };
+    delete user.password;
+
+    return {
+      success: true,
+      message: '登录成功',
+      data: {user, token} // 返回 token
+    };
   }
 
   // 根据 uid 获取用户信息

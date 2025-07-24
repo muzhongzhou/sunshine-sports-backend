@@ -1,10 +1,14 @@
-import { Controller, Post, Get, Body, Query, Inject } from '@midwayjs/core';
+import { Controller, Post, Get, Body, Inject } from '@midwayjs/core';
 import { UserService } from '../service/user.service';
+import { Context } from "@midwayjs/koa";
 
 @Controller('/user')
 export class UserController {
   @Inject()
   userService: UserService;
+
+  @Inject()
+  ctx: Context;
 
   // 注册接口
   @Post('/register')
@@ -28,11 +32,12 @@ export class UserController {
 
   // 获取用户信息接口
   @Get('/info')
-  async getUser(@Query('uid') uid: number) {
-    if (!uid) {
-      return { success: false, message: '请提供用户ID' };
+  async getProfile() {
+    const user = this.ctx.user;
+    if (!user) {
+      return { success: false, message: '未登录' };
     }
-    return await this.userService.getUser(uid);
+    return await this.userService.getUser(user.uid);
   }
 }
 

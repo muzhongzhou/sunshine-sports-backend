@@ -1,6 +1,6 @@
 import { Provide } from '@midwayjs/core';
 import { InjectEntityModel } from '@midwayjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Venue } from '../entity/venue.entity';
 import { Sport } from '../entity/sport.entity';
 import { Comment } from '../entity/comment.entity';
@@ -18,11 +18,19 @@ export class ActivityService {
 
   // 搜索场馆
   async search(keyword: string) {
+    // 处理空搜索
+    if (!keyword.trim()) {
+      return {
+        success: true,
+        data: await this.venueModel.find({ relations: ['sports'] })
+      };
+    }
+
     const venues = await this.venueModel.find({
       relations: ['sports'],
       where: [
-        { name: keyword },
-        { sports: { name: keyword } }
+        { name: Like(`%${keyword}%`) },
+        { sports: { name: Like(`%${keyword}%`) } }
       ]
     });
     return { success: true, data: venues };

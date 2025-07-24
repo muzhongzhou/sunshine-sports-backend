@@ -1,26 +1,33 @@
-import { Controller, Put, Post, Body, Query, Inject } from '@midwayjs/core';
+import { Controller, Put, Post, Body, Inject } from '@midwayjs/core';
 import { PersonalService } from '../service/personal.service';
+import { Context } from '@midwayjs/koa';
 
 @Controller('/personal')
 export class PersonalController {
   @Inject()
   personalService: PersonalService;
 
+  @Inject()
+  ctx: Context;
+
   // 更新个人信息
   @Put('/update')
-  async updateInfo(@Query('uid') uid: number, @Body() body) {
-    if (!uid) {
-      return { success: false, message: '请提供用户ID' };
+  async updateInfo(@Body() body) {
+    const user = this.ctx.user;
+    if (!user) {
+      return { success: false, message: '未登录' };
     }
-    return await this.personalService.updateInfo(uid, body);
+
+    return await this.personalService.updateInfo(user.uid, body);
   }
 
   // 退出登录
   @Post('/logout')
-  async logout(@Query('uid') uid: number) {
-    if (!uid) {
-      return { success: false, message: '请提供用户ID' };
+  async logout() {
+    const user = this.ctx.user;
+    if (!user) {
+      return { success: false, message: '未登录' };
     }
-    return await this.personalService.logout(uid);
+    return await this.personalService.logout(user.uid);
   }
 }
