@@ -5,6 +5,7 @@ import { Reservation } from '../entity/reservation.entity';
 import { User } from '../entity/user.entity';
 import { Venue } from '../entity/venue.entity';
 import { Sport } from "../entity/sport.entity";
+import { OrderReservation } from "../entity/order-reservation.entity";
 
 @Provide()
 export class ReservationService {
@@ -19,6 +20,9 @@ export class ReservationService {
 
   @InjectEntityModel(Sport)
   sportModel: Repository<Sport>;
+
+  @InjectEntityModel(OrderReservation)
+  orderReservationModel: Repository<OrderReservation>;
 
   // 添加报名
   async addReservation(uid: number, venueId: number, sportId: number, timeSlot: string) {
@@ -51,7 +55,20 @@ export class ReservationService {
   }
 
   // 删除报名
+  // 在删除预约时添加关联检查
   async deleteReservation(rid: number) {
+    // 检查是否已关联到订单
+    const linked = await this.orderReservationModel.findOne({
+      where: { reservation: { rid } }
+    });
+
+    if (linked) {
+      return {
+        success: false,
+        message: '删除失败，该预约已关联到订单'
+      };
+    }
+
     const result = await this.reservationModel.delete({ rid });
     if (result.affected > 0) {
       return { success: true, message: '删除成功' };

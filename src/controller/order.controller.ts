@@ -12,17 +12,13 @@ export class OrderController {
 
   // 学生创建订单
   @Post('/create')
-  async createOrder(@Body() body) {
+  async createOrder() { // 移除了body参数
     const user = this.ctx.user;
     if (!user) {
       return { success: false, message: '未登录' };
     }
 
-    const { uid } = body;
-    if (!uid) {
-      return { success: false, message: '请提供用户ID' };
-    }
-    return await this.orderService.createOrder(uid);
+    return await this.orderService.createOrder(user.uid);
   }
 
   // 老师查看所有订单
