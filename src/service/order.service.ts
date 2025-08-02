@@ -108,6 +108,12 @@ export class OrderService {
         { rid: In(reservationIds) },
         { status: '已批准' }
       );
+    } else {
+      const reservationIds = order.orderReservations.map(or => or.reservation.rid);
+      await this.reservationModel.update(
+        { rid: In(reservationIds) },
+        { status: '已拒绝' }
+      );
     }
 
     return {

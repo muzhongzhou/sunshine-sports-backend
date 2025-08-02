@@ -18,11 +18,11 @@ export class CommentController {
       return { success: false, message: '未登录' };
     }
 
-    const { venueId, userId, content } = body;
-    if (!venueId || !userId || !content) {
+    const { venueId,  content } = body;
+    if (!venueId ||  !content) {
       return { success: false, message: '缺少必要参数' };
     }
-    const result = await this.commentService.addComment(venueId, userId, content);
+    const result = await this.commentService.addComment(venueId, user.uid, content);
     return { success: true, message: '评论添加成功', data: result };
   }
 
