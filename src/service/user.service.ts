@@ -2,7 +2,7 @@ import { Provide, Inject } from '@midwayjs/core';
 import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../entity/user.entity';
-import * as bcrypt from 'bcrypt';
+import * as bcryptjs from 'bcryptjs';
 import { JwtService } from '@midwayjs/jwt';
 
 @Provide()
@@ -20,7 +20,7 @@ export class UserService {
       return { success: false, message: '手机号已注册' };
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcryptjs.hash(password, 10);
 
     const user = new User();
     user.name = name;
@@ -42,7 +42,7 @@ export class UserService {
       return { success: false, message: '手机号或密码错误' };
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcryptjs.compare(password, user.password);
     if (!isMatch) {
       return { success: false, message: '手机号或密码错误' };
     }
